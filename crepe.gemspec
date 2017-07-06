@@ -9,9 +9,9 @@ Gem::Specification.new do |s|
   s.version     = Crepe::VERSION
   s.authors     = ["willnet"]
   s.email       = ["netwillnet@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of Crepe."
-  s.description = "TODO: Description of Crepe."
+  s.homepage    = "https://github.com/willnet/crepe"
+  s.summary     = "Add New Layers to Rails"
+  s.description = "Add New Layers to Rails. Form, Service, ViewModel."
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
