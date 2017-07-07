@@ -7,6 +7,13 @@ class ArtistsController < ApplicationController
   end
 
   def create
+    @model = Artist::CreateService.call(params)
+
+    if @model.success?
+      redirect_to artists_path
+    else
+      render :new
+    end
   end
 
   def edit
