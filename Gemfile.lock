@@ -2,7 +2,7 @@ PATH
   remote: .
   specs:
     crepe (0.1.0)
-      rails (~> 5.1.2)
+      rails (~> 5.1.0)
 
 GEM
   remote: https://rubygems.org/
