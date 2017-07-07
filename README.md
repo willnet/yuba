@@ -1,7 +1,9 @@
 # Crepe
-Short description and motivation.
+
+This gem is now under construction. It doesn't work now.
 
 ## Usage
+
 How to use my plugin.
 
 ## Installation
