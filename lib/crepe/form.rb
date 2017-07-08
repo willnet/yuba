@@ -1,5 +1,9 @@
 module Crepe
   class Form
+    autoload :Attribute, 'crepe/form/attribute'
+    autoload :Attributes, 'crepe/form/attributes'
+    autoload :Collection, 'crepe/form/collection'
+
     include ActiveModel::Model
     class_attribute :_model_attribute
 
