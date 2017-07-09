@@ -2,6 +2,12 @@
 
 This gem is now under construction. It doesn't work now.
 
+Crepe add new layers to rails.
+
+- Service
+- Form
+- ViewModel
+
 ## Usage
 
 How to use my plugin.
