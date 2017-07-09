@@ -6,11 +6,20 @@ module Crepe
 
     include ActiveModel::Model
     class_attribute :_model_attribute
+    class_attribute :attributes
 
     class << self
       # TODO: reformのようにネストできるようにしたい
-      def attribute(name)
-        attr_accessor name
+      def attribute(name, type: 'string', &block)
+        mod = Module.new do
+          define_method(name) do
+            attributes[name.to_s]
+          end
+          define_method("#{name}=") do |value|
+            write_attribute(name.to_s, value, block)
+          end
+        end
+        include mod
       end
 
       def collection(name)
@@ -38,6 +47,14 @@ module Crepe
 
     def model_name
       model&.model_name
+    end
+
+    private
+
+    def write_attribute(name, value, block)
+      # TODO: convert value by type of attribute
+      value = Attributes.new(value, &block) if block
+      attributes[name] = value
     end
   end
 end
