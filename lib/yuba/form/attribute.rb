@@ -1,4 +1,4 @@
-module Crepe
+module Yuba
   class Form
     class Attribute
       def initialize(name)

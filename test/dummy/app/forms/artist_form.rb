@@ -1,4 +1,4 @@
-class ArtistForm < Crepe::Form
+class ArtistForm < Yuba::Form
   model :artist
 
   attribute :artist do

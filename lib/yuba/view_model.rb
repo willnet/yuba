@@ -1,4 +1,4 @@
-module Crepe
+module Yuba
   class ViewModel
     class << self
       def success(**args)

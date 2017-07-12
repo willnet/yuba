@@ -1,4 +1,4 @@
-class Artist::CreateService < Crepe::Service
+class Artist::CreateService < Yuba::Service
   def call(params)
     form = build_form(params: params)
     if form.save

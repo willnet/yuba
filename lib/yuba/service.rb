@@ -1,4 +1,4 @@
-module Crepe
+module Yuba
   class Service
     class << self
       def call(**args)

@@ -1,2 +1,2 @@
-class Artist::NewViewModel < Crepe::ViewModel
+class Artist::NewViewModel < Yuba::ViewModel
 end

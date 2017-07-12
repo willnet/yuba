@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    crepe (0.1.0)
+    yuba (0.1.0)
       rails (~> 5.1.0)
 
 GEM
@@ -111,7 +111,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  crepe!
+  yuba!
   sqlite3
 
 BUNDLED WITH

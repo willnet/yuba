@@ -3,7 +3,7 @@ require_relative 'boot'
 require 'rails/all'
 
 Bundler.require(*Rails.groups)
-require "crepe"
+require "yuba"
 
 module Dummy
   class Application < Rails::Application

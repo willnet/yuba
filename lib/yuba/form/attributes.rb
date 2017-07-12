@@ -1,4 +1,4 @@
-module Crepe
+module Yuba
   module Form
     class Attributes
       class_attribute :attributes

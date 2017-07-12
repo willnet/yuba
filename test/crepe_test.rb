@@ -1,7 +1,7 @@
 require 'test_helper'
 
-class Crepe::Test < ActiveSupport::TestCase
+class Yuba::Test < ActiveSupport::TestCase
   test "truth" do
-    assert_kind_of Module, Crepe
+    assert_kind_of Module, Yuba
   end
 end

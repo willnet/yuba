@@ -1,8 +1,8 @@
-module Crepe
+module Yuba
   class Form
-    autoload :Attribute, 'crepe/form/attribute'
-    autoload :Attributes, 'crepe/form/attributes'
-    autoload :Collection, 'crepe/form/collection'
+    autoload :Attribute, 'yuba/form/attribute'
+    autoload :Attributes, 'yuba/form/attributes'
+    autoload :Collection, 'yuba/form/collection'
 
     include ActiveModel::Model
     class_attribute :_model_attribute

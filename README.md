@@ -1,8 +1,8 @@
-# Crepe
+# Yuba
 
 This gem is now under construction. It doesn't work now.
 
-Crepe add new layers to rails.
+Yuba add new layers to rails.
 
 - Service
 - Form
@@ -16,7 +16,7 @@ How to use my plugin.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'crepe'
+gem 'yuba'
 ```
 
 And then execute:
@@ -26,7 +26,7 @@ $ bundle
 
 Or install it yourself as:
 ```bash
-$ gem install crepe
+$ gem install yuba
 ```
 
 ## Contributing
