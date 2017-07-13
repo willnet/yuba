@@ -1,6 +1,7 @@
 # Yuba
 
 [![Build Status](https://travis-ci.org/willnet/yuba.svg?branch=master)](https://travis-ci.org/willnet/yuba)
+[![Gem Version](https://badge.fury.io/rb/yuba.svg)](https://badge.fury.io/rb/yuba)
 
 This gem is now under construction. It doesn't work now.
 
