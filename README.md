@@ -26,7 +26,7 @@ class ArtistsController < ApplicationController
 ```
 
 ```ruby
-class Artist::CreateService < Crepe::Service
+class Artist::CreateService < Yuba::Service
   def call(params)
     form = build_form(params: params)
     if form.save
@@ -39,7 +39,7 @@ end
 ```
 
 ```ruby
-class ArtistForm < Crepe::Form
+class ArtistForm < Yuba::Form
   model :artist
 
   attribute :artist do
