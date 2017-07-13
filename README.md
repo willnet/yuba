@@ -1,5 +1,7 @@
 # Yuba
 
+[![Build Status](https://travis-ci.org/willnet/yuba.svg?branch=master)](https://travis-ci.org/willnet/yuba)
+
 This gem is now under construction. It doesn't work now.
 
 Yuba add new layers to rails.
