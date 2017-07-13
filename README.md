@@ -10,7 +10,57 @@ Yuba add new layers to rails.
 
 ## Usage
 
-How to use my plugin.
+sample
+
+```ruby
+class ArtistsController < ApplicationController
+  def create
+    @model = Artist::CreateService.call(params)
+
+    if @model.success?
+      redirect_to artists_path
+    else
+      render :new
+    end
+  end
+```
+
+```ruby
+class Artist::CreateService < Crepe::Service
+  def call(params)
+    form = build_form(params: params)
+    if form.save
+      success(form: form) # return ArtistViewModel
+    else
+      failure(form: form) # return ArtistViewModel
+    end
+  end
+end
+```
+
+```ruby
+class ArtistForm < Crepe::Form
+  model :artist
+
+  attribute :artist do
+    attribute :name
+    validates :name, presence: true
+  end
+
+  collection :albums do
+    attribute :title
+    attribute :published_on, :date
+
+    validates :title, presence: true
+    validates :published_on, presence: true
+  end
+end
+```
+
+```ruby
+class ArtistViewModel < Yuba::ViewModel
+end
+```
 
 ## Installation
 Add this line to your application's Gemfile:
