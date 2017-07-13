@@ -30,9 +30,9 @@ class Artist::CreateService < Yuba::Service
   def call(params)
     form = build_form(params: params)
     if form.save
-      success(form: form) # return ArtistViewModel
+      success(form: form) # return Artist::CreateViewModel
     else
-      failure(form: form) # return ArtistViewModel
+      failure(form: form) # return Artist::CreateViewModel
     end
   end
 end
@@ -58,7 +58,7 @@ end
 ```
 
 ```ruby
-class ArtistViewModel < Yuba::ViewModel
+class Artist::CreateViewModel < Yuba::ViewModel
 end
 ```
 
