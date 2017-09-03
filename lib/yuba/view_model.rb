@@ -4,6 +4,10 @@ module Yuba
       def success(**args)
         new(args.merge(success: true))
       end
+
+      def failure(*args)
+        new(args.merge(success: false))
+      end
     end
 
     def initialize(success: true, **args)
