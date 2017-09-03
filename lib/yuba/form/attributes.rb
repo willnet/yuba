@@ -1,12 +1,12 @@
 module Yuba
-  module Form
+  class Form
     class Attributes
       class_attribute :attributes
       self.attributes = {}
 
       def initialize(value)
         yield if block_given?
-        deep_assign(value)
+        deep_assign(attributes, value)
       end
 
       def attribute(name, type: string, &block)
@@ -29,13 +29,13 @@ module Yuba
         attributes[name] = value
       end
 
-      def deep_assign(value)
+      def deep_assign(attrs, value)
         raise ArgumentError unless value.is_a? Hash
         value.each do |k,v|
           if v.is_a? Hash
-            deep_assign(v)
+            deep_assign(attrs[k.to_s], v)
           else
-            attributes[name.to_s] = v
+            attrs[k.to_s] = v
           end
         end
       end

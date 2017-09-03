@@ -7,6 +7,7 @@ module Yuba
     include ActiveModel::Model
     class_attribute :_model_attribute
     class_attribute :attributes
+    self.attributes = {}
 
     class << self
       # TODO: reformのようにネストできるようにしたい
@@ -34,6 +35,11 @@ module Yuba
       end
     end
 
+    def initialize(value)
+      yield if block_given?
+      deep_assign(self.class.attributes, value)
+    end
+
     def save
       valid? && persist
     end
@@ -54,7 +60,19 @@ module Yuba
     def write_attribute(name, value, block)
       # TODO: convert value by type of attribute
       value = Attributes.new(value, &block) if block
-      attributes[name] = value
+      self.class.attributes[name] = value
+    end
+
+    def deep_assign(attrs, value)
+      raise ArgumentError unless value.is_a? Hash
+      value.each do |k,v|
+        if v.is_a? Hash
+          attrs[k.to_s] = {}
+          deep_assign(attrs[k.to_s], v)
+        else
+          attrs[k.to_s] = v
+        end
+      end
     end
   end
 end
