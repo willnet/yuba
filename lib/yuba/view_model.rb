@@ -22,9 +22,5 @@ module Yuba
     def failure?
       !@success
     end
-
-    def to_model
-      form
-    end
   end
 end
