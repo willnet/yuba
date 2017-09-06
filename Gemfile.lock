@@ -52,7 +52,6 @@ GEM
     globalid (0.4.0)
       activesupport (>= 4.2.0)
     i18n (0.8.6)
-    interception (0.5)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
     mail (2.6.6)
@@ -72,9 +71,6 @@ GEM
       slop (~> 3.4)
     pry-rails (0.3.6)
       pry (>= 0.10.4)
-    pry-rescue (1.4.5)
-      interception (>= 0.5)
-      pry
     rack (2.0.3)
     rack-test (0.6.3)
       rack (>= 1.0)
@@ -124,9 +120,8 @@ PLATFORMS
 
 DEPENDENCIES
   pry-rails
-  pry-rescue
   sqlite3
   yuba!
 
 BUNDLED WITH
-   1.15.1
+   1.15.4
