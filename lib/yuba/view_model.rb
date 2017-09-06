@@ -12,7 +12,7 @@ module Yuba
 
     def initialize(success: true, **args)
       @success = success
-      args.each { |k,v| self.class.send(:define_method, k) { v } }
+      args.each { |k,v| self.singleton_class.send(:define_method, k) { v } }
     end
 
     def success?
