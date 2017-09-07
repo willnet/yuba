@@ -5,7 +5,7 @@ module Yuba
         new(args.merge(success: true))
       end
 
-      def failure(*args)
+      def failure(**args)
         new(args.merge(success: false))
       end
     end
