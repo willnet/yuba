@@ -1,3 +1,5 @@
+require 'reform/rails'
+
 module Yuba
   autoload :Form, 'yuba/form'
   autoload :Service, 'yuba/service'
