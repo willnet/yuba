@@ -1,13 +1,30 @@
 module Yuba
   class Service
+    class_attribute :_properties
+    self._properties = {}
+
     class << self
       def call(**args)
-        service = new
-        return_value = args.present? ? service.call(**args) : service.call
-        if return_value.respond_to?(:success?)
-          return_value
-        else
-          result.success(form: service.form)
+        return new.call if args.empty?
+
+        new(**args).call
+      end
+
+      def property(name, options = {})
+        _properties[name.to_sym] = options
+      end
+    end
+
+    def initialize(**args)
+      args.keys.each do |key|
+        unless _properties.has_key?(key.to_sym)
+          raise ArgumentError, "missing 'property :#{key}' in #{self.class.name} class"
+        end
+      end
+
+      args.each do |key, value|
+        define_singleton_method key do
+          value
         end
       end
     end
