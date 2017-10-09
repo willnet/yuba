@@ -10,6 +10,12 @@ module Yuba
         new(**args).call
       end
 
+      def setup(**args)
+        return new.setup if args.empty?
+
+        new(**args).setup
+      end
+
       def property(name, options = {})
         _properties[name.to_sym] = options
       end
