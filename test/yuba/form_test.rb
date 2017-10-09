@@ -25,4 +25,11 @@ class Yuba::Form::Test < ActiveSupport::TestCase
     form.validate(start_time_params)
     assert_equal form.start_time, Time.zone.local(2000, 1, 1, 12, 0)
   end
+
+  test "munges multi-param date and date fields into a valid Date attribute" do
+    start_time_params = { "start_time(1i)"=>"2000", "start_time(2i)"=>"1", "start_time(3i)"=>"1" }
+    form = form_class.new(model_class.new)
+    form.validate(start_time_params)
+    assert_equal form.start_time, Time.zone.local(2000, 1, 1).to_date
+  end
 end
