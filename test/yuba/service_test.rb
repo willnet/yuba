@@ -1,6 +1,7 @@
 class Yuba::Service::Test < ActiveSupport::TestCase
   service_class = Class.new(Yuba::Service) do
     property :name
+    property :address, optional: true
   end
 
   test 'property works' do

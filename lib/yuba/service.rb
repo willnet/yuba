@@ -23,7 +23,7 @@ module Yuba
 
     def initialize(**args)
       args.keys.each do |key|
-        unless _properties.has_key?(key.to_sym)
+        if !_properties.has_key?(key.to_sym) && !_properties.dig(key.to_sym, :optional)
           raise ArgumentError, "missing 'property :#{key}' in #{self.class.name} class"
         end
       end
