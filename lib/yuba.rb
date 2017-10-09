@@ -1,4 +1,5 @@
 require 'reform/rails'
+require 'dry/types'
 
 module Yuba
   autoload :Form, 'yuba/form'
