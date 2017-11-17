@@ -5,9 +5,9 @@ module Yuba
 
     class << self
       def call(**args)
-        return new.call if args.empty?
-
-        new(**args).call
+        service = args.empty? ? new : new(**args)
+        service.call
+        service
       end
 
       def setup(**args)
