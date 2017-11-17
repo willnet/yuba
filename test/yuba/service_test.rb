@@ -1,15 +1,17 @@
 class Yuba::Service::Test < ActiveSupport::TestCase
   service_class = Class.new(Yuba::Service) do
-    property :name
+    property :name, public: true
     property :address, optional: true
+    property :password, optional: true
 
     def call
     end
   end
 
   test 'property works' do
-    service = service_class.new(name: 'willnet')
+    service = service_class.new(name: 'willnet', password: 'password')
     assert_equal service.name, 'willnet'
+    assert_equal service.singleton_class.private_method_defined?(:password), true
   end
 
   test 'raise argument error on assinging key exclude property' do
