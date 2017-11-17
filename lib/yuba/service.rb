@@ -33,6 +33,23 @@ module Yuba
           value
         end
       end
+      success
+    end
+
+    def success
+      @_success = true
+    end
+
+    def failure
+      @_success = false
+    end
+
+    def success?
+      @_success
+    end
+
+    def failure?
+      !@_success
     end
 
     def build_form(**args)
