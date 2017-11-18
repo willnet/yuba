@@ -11,18 +11,21 @@ Yuba add new layers to rails.
 - Form
 - ViewModel
 
-## Usage
-
-sample
+## Sample
 
 ```ruby
 class ArtistsController < ApplicationController
-  def create
-    @model = Artist::CreateService.call(params)
+  def new
+    @view_model = Artist::CreateService.new(params: params).view_model
+  end
 
-    if @model.success?
+  def create
+    service = Artist::CreateService.call(params: params)
+
+    if service.success?
       redirect_to artists_path
     else
+      @view_model = service.view_model
       render :new
     end
   end
@@ -30,39 +33,52 @@ class ArtistsController < ApplicationController
 
 ```ruby
 class Artist::CreateService < Yuba::Service
-  def call(params)
-    form = build_form(params: params)
-    if form.save
-      success(form: form) # return Artist::CreateViewModel
+  property :params
+
+  def call
+    if form.validate(params)
+      form.save
     else
-      failure(form: form) # return Artist::CreateViewModel
+      failure
     end
+  end
+
+  def view_model
+    Artist::CreateViewModel.new(form: form)
+  end
+
+  private
+
+  def form
+    @form ||= ArtistForm.new(Artist.new)
   end
 end
 ```
 
 ```ruby
 class ArtistForm < Yuba::Form
-  model :artist
+  property :title
 
-  attribute :artist do
-    attribute :name
-    validates :name, presence: true
-  end
-
-  collection :albums do
-    attribute :title
-    attribute :published_on, :date
-
-    validates :title, presence: true
-    validates :published_on, presence: true
-  end
+  validates :title, presence: true, length: { maximum: 100 }
 end
 ```
 
 ```ruby
 class Artist::CreateViewModel < Yuba::ViewModel
+  property :form, public: true
 end
+```
+
+## generators
+
+You can use generators.
+
+Example
+
+```sh
+rails generate yuba:service create_artist
+rails generate yuba:form artist
+rails generate yuba:view_model artist_index
 ```
 
 ## Installation
