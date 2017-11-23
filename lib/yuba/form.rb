@@ -7,6 +7,7 @@ module Yuba
       def inherited(subclass)
         subclass.feature Coercion
         subclass.feature MultiParameterAttributes
+        subclass.include Reform::Form::ActiveRecord
         subclass.include Reform::Form::ActiveModel::ModelReflections
       end
     end
