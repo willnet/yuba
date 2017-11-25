@@ -11,6 +11,52 @@ Yuba add new layers to rails.
 - Form
 - ViewModel
 
+## Installation
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'yuba'
+```
+
+And then execute:
+```bash
+$ bundle
+```
+
+Or install it yourself as:
+```bash
+$ gem install yuba
+```
+
+## ViewModel
+
+ViewModel is useful when there are many instance variables in controller.
+
+### Auto Assign
+
+You can use ViewModel like following
+
+```ruby
+class ArtistViewModel < Yuba::ViewModel
+  property :user, public: true
+
+  def post
+    user.latest_post
+  end
+end
+
+@view_model = ArtistViewModel.new(user: current_user)
+```
+
+In view template, if you want to access user and post, you have to use `@view_model` instance variable like `@view_model.user.name`. if you feel that it's troublesome, you can write like following
+
+```ruby
+view_model = ArtistViewModel.new(user: current_user)
+render view_model: view_model
+```
+
+view_model option takes ViewModel get it's public methods and assign them to instance variables in view template. So you can write `<%= @user.name %>`
+
 ## Sample
 
 ```ruby
@@ -81,22 +127,7 @@ rails generate yuba:form artist
 rails generate yuba:view_model artist_index
 ```
 
-## Installation
-Add this line to your application's Gemfile:
 
-```ruby
-gem 'yuba'
-```
-
-And then execute:
-```bash
-$ bundle
-```
-
-Or install it yourself as:
-```bash
-$ gem install yuba
-```
 
 ## Contributing
 Contribution directions go here.
