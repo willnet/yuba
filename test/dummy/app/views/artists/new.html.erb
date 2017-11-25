@@ -1,14 +1,6 @@
 <h2>New Artist</h2>
-<%= form_with model: @model do |f| %>
+<%= form_with model: @form do |f| %>
   <%= f.label :name %>
   <%= f.text_field :name %>
-  <div>
-    <%= f.fields_for :albums do |g| %>
-      <%= g.label :title %>
-      <%= g.text_field :title %>
-      <%= g.label :published_on %>
-      <%= g.date_field :published_on %>
-    <% end %>
-  </div>
   <%= f.submit %>
 <% end %>

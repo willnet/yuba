@@ -1,10 +1,22 @@
 class Artist::CreateService < Yuba::Service
-  def call(params)
-    form = build_form(params: params)
-    if form.save
-      success(form: form)
+  property :artist
+  property :params, optional: true
+
+  def call
+    if form.validate(params)
+      form.save
     else
-      failure(form: form)
+      failure
     end
+  end
+
+  def view_model
+    @view_model ||= ArtistViewModel.new(form: form)
+  end
+
+  private
+
+  def form
+    @form ||= ArtistForm.new(artist)
   end
 end
