@@ -6,7 +6,7 @@ class Artist::CreateService < Yuba::Service
     if form.validate(params)
       form.save
     else
-      failure
+      fail!
     end
   end
 

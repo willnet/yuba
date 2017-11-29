@@ -27,9 +27,9 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     assert_equal service.success?, true
   end
 
-  test '#success? return false after call #failure' do
+  test '#success? return false after call #fail!' do
     service = service_class.new
-    service.failure
+    service.fail!
     assert_equal service.success?, false
   end
 
@@ -38,9 +38,9 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     assert_equal service.failure?, false
   end
 
-  test '#failure? return true after call #failure' do
+  test '#failure? return true after call #fail!' do
     service = service_class.new
-    service.failure
+    service.fail!
     assert_equal service.failure?, true
   end
 end

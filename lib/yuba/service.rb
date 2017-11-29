@@ -25,7 +25,7 @@ module Yuba
       @_success = true
     end
 
-    def failure
+    def fail!
       @_success = false
     end
 
