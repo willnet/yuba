@@ -7,6 +7,20 @@ class Yuba::Form::Test < ActiveSupport::TestCase
 
     attribute :person do
       attribute :name
+
+      collection :posts do
+        attribute :body
+      end
+    end
+
+    collection :songs do
+      attribute :title
+      attribute :author do
+        attribute :name
+        collection :emails do
+          attribute :email
+        end
+      end
     end
   end
 
@@ -29,6 +43,14 @@ class Yuba::Form::Test < ActiveSupport::TestCase
     form = form_class.new(model: model_class.new)
     form.person.name = 'willnet'
     assert_equal form.person.name, 'willnet'
+  end
+
+  test 'collection attribute works' do
+    form = form_class.new(model: model_class.new)
+    form.songs = [{ title: 'Burn', author: { name: 'deep purple', emails: [{email: 'deep@example.com'}] } }]
+    assert_equal form.songs.first.title, 'Burn'
+    assert_equal form.songs.first.author.name, 'deep purple'
+    assert_equal form.songs.first.author.emails.first.email, 'deep@example.com'
   end
 
 =begin
