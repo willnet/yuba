@@ -6,7 +6,7 @@ module Yuba
     class Attributes < ::Hash
       def add(name, options, &block)
         self[name] = if block
-          NestedAttributeBuilder.call(name, options, block).new
+          NestedAttributeBuilder.build(name, options, &block)
         else
           Attribute.new(name, options)
         end
@@ -22,17 +22,24 @@ module Yuba
       end
     end
 
-    NestedAttributeBuilder = ->(name, options, block) do
-      Class.new do
-        extend Schema
-        class_eval(&block)
+    module NestedAttributeBuilder
+      def self.build(name, options, &block)
+        klass = build_class(name, options, &block)
+        klass.new
+      end
 
-        def value=(v)
-          assign_attributes(v)
-        end
+      def self.build_class(name, options, &block)
+        Class.new do
+          extend Schema
+          class_eval(&block)
 
-        def value
-          self
+          def value=(v)
+            assign_attributes(v)
+          end
+
+          def value
+            self
+          end
         end
       end
     end
