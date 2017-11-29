@@ -1,10 +1,10 @@
 require 'dry-types'
 
 module Yuba
-  class Form < ::Reform::Form
+  class Form
     module Coercion
       module Types
-        include Dry::Types.module
+        # include Dry::Types.module
       end
 
       module ClassMethods

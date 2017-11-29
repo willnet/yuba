@@ -1,6 +1,5 @@
-require 'reform/rails'
 require 'dry/types'
-
+require 'active_support/all'
 module Yuba
   autoload :Form, 'yuba/form'
   autoload :Service, 'yuba/service'
