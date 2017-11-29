@@ -37,18 +37,6 @@ module Yuba
       !@_success
     end
 
-    def build_form(**args)
-      form_class.build(**args)
-    end
-
-    def form_class
-      Object.const_get(form_class_name)
-    end
-
-    def view_model_class
-      Object.const_get(form_class_name)
-    end
-
     private
 
     def validate_arguments(args)
@@ -67,14 +55,6 @@ module Yuba
         end
         self.singleton_class.class_eval { private key.to_sym } unless public_method
       end
-    end
-
-    def form_class_name
-      self.class.name.sub(/::.+Service/, 'Form')
-    end
-
-    def view_model_class_name
-      self.class.name.sub(/Service\z/, 'ViewModel')
     end
   end
 end
