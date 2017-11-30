@@ -40,17 +40,17 @@ module Yuba
         hash.each do |k, v|
           definition = local_def[k]
           next unless definition
-          if v.is_a? Hash # TODO: 値ではなく定義を見る
-            local_attr[k] = Attributes.new(definition)
-            assign_attributes(v, local_attr[k], definition)
-          elsif v.is_a? Array
+          if definition.leaf?
+            local_attr[k] = definition.coerce(v)
+          elsif definition.collection?
             local_attr[k] = CollectionAttributes.new(definition)
             v.each_with_index do |h, i|
               local_attr[k][i] = Attributes.new(definition)
               assign_attributes(h, local_attr[k][i], definition)
             end
           else
-            local_attr[k] = definition.coerce(v)
+            local_attr[k] = Attributes.new(definition)
+            assign_attributes(v, local_attr[k], definition)
           end
         end
       end
