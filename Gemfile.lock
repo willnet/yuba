@@ -1,9 +1,9 @@
 PATH
   remote: .
   specs:
-    yuba (0.0.1.pre)
+    yuba (0.0.1)
       dry-types
-      rails (>= 5.0.0)
+      rails (>= 4.2.0)
       reform-rails
 
 GEM
