@@ -19,6 +19,19 @@ module Yuba
         def model(model_name)
           @_model = model_name.classify.constantize
         end
+=begin
+        def attribute(name, options = {}, &block)
+          definition.add(name, options, &block)
+
+          define_method name do
+            attributes[name]
+          end
+
+          define_method "#{name}=" do |value|
+            assign_attributes({name.to_sym =>  value})
+          end
+        end
+=end
 
         def attribute(name, options = {}, &block)
           definition.add(name, options, &block)
@@ -32,13 +45,14 @@ module Yuba
           end
         end
 
+
         def collection(name, options = {}, &block)
           options[:collection] = true
           attribute(name, options, &block)
         end
 
         def definition
-          @definition ||= AttributesDefinition.new
+          @definition ||= NestedAttributesDefinitionBuilder.build('root', {})
         end
       end
 
