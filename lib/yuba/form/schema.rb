@@ -2,6 +2,20 @@ module Yuba
   class Form
     module Schema
       module ClassMethods
+        def self.extended(base)
+          base.include ActiveModel::Validations
+
+          base.send(:define_method, :valid?) do |context = nil|
+            super(context)
+            self.class.definition.each do |key, sub_definition|
+              next if sub_definition.leaf?
+              sub_definition.valid?(context)
+              errors[key] << sub_definition.errors unless sub_definition.errors.empty?
+            end
+            errors.empty?
+          end
+        end
+
         def model(model_name)
           @_model = model_name.classify.constantize
         end
