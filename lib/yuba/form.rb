@@ -2,84 +2,6 @@ require 'delegate'
 
 module Yuba
   class Form
-    def initialize(model:)
-    end
-
-    class Attributes < ::Hash
-      def add(name, options, &block)
-        self[name] = if block
-          if options[:collection]
-            CollectionAttributes.new(name, options, &block)
-          else
-            NestedAttributeBuilder.build(name, options, &block)
-          end
-        else
-          Attribute.new(name, options)
-        end
-      end
-    end
-
-    class Attribute
-      attr_accessor :name, :value, :options
-
-      def initialize(name, options)
-        @name = name
-        @options = options
-      end
-    end
-
-    class CollectionAttributes < SimpleDelegator
-      attr_accessor :name, :options, :block
-
-      def initialize(name, options, &block)
-        @name = name
-        @options = options
-        @block = block
-        @collection = []
-        super(@collection)
-      end
-
-      def build_nested_attribute
-        NestedAttributeBuilder.build(name, options, &block)
-      end
-
-      def value=(array)
-        @collection = array.map do |hash|
-          nested_attribute = build_nested_attribute
-          nested_attribute.value = hash
-          nested_attribute
-        end
-        __setobj__(@collection)
-        @collection
-      end
-
-      def value
-        self
-      end
-    end
-
-    module NestedAttributeBuilder
-      def self.build(name, options, &block)
-        klass = build_class(name, options, &block)
-        klass.new
-      end
-
-      def self.build_class(name, options, &block)
-        Class.new do
-          extend Schema::ClassMethods
-          include Schema
-          class_eval(&block)
-
-          def value=(v)
-            assign_attributes(v)
-          end
-
-          def value
-            self
-          end
-        end
-      end
-    end
 
     module Schema
       module ClassMethods
@@ -88,14 +10,14 @@ module Yuba
         end
 
         def attribute(name, options = {}, &block)
-          attributes.add(name, options, &block)
+          definition.add(name, options, &block)
 
           define_method name do
-            self.class.attributes[name].value
+            attributes[name]
           end
 
           define_method "#{name}=" do |value|
-            self.class.attributes[name].value = value
+            assign_attributes({name.to_sym =>  value})
           end
         end
 
@@ -104,17 +26,140 @@ module Yuba
           attribute(name, options, &block)
         end
 
-        def attributes
-          @attributes ||= Attributes.new
+        def definition
+          @definition ||= AttributesDefinition.new
         end
       end
 
-      def assign_attributes(hash)
+      def attributes
+        @attributes ||= Attributes.new(self.class.definition)
+      end
+
+      def [](name)
+        send(name)
+      end
+
+      def assign_attributes(hash, local_attr = attributes, local_def = self.class.definition)
         hash.each do |k, v|
-          self.class.attributes[k].value = v
+          definition = local_def[k]
+          next unless definition
+          if v.is_a? Hash # TODO: 値ではなく定義を見る
+            local_attr[k] = Attributes.new(definition)
+            assign_attributes(v, local_attr[k], definition)
+          elsif v.is_a? Array
+            local_attr[k] = CollectionAttributes.new(definition)
+            v.each_with_index do |h, i|
+              local_attr[k][i] = Attributes.new(definition)
+              assign_attributes(h, local_attr[k][i], definition)
+            end
+          else
+            local_attr[k] = definition.coerce(v)
+          end
         end
       end
     end
+
+    def initialize(model:)
+    end
+
+    class AttributesDefinition < ::Hash
+      attr_accessor :name, :options
+
+      def initialize(name: 'root', options: {})
+        @name = name
+        @options = options
+      end
+
+      def add(name, options, &block)
+        self[name] = if block
+          NestedAttributesDefinitionBuilder.build(name, options, &block)
+        else
+          AttributeDefinition.new(name, options)
+        end
+      end
+
+      def collection?
+        !!@options[:collection]
+      end
+
+      def leaf?
+        false
+      end
+    end
+
+    class AttributeDefinition
+      attr_accessor :name, :options
+
+      def initialize(name, options)
+        @name = name
+        @options = options
+      end
+
+      def coerce(value)
+        value
+      end
+
+      def leaf?
+        true
+      end
+    end
+
+    module NestedAttributesDefinitionBuilder
+      def self.build(name, options, &block)
+        klass = build_class(name, options, &block)
+        klass.definition.name = name
+        klass.definition.options = options
+        klass.definition
+      end
+
+      def self.build_class(name, options, &block)
+        Class.new do
+          extend Schema::ClassMethods
+          class_eval(&block)
+        end
+      end
+    end
+
+    class Attributes < SimpleDelegator
+      def initialize(definition)
+        @definition = definition
+        @attributes = {}
+        @definition.each do |key, sub_definition|
+          define_singleton_method(key) do
+            if sub_definition.leaf?
+              @attributes[key]
+            elsif sub_definition.collection?
+              @attributes[key] ||= CollectionAttributes.new(sub_definition)
+            else
+              @attributes[key] ||= Attributes.new(sub_definition)
+            end
+          end
+
+          define_singleton_method("#{key}=") do |value|
+            @attributes[key] = value
+          end
+        end
+        super(@attributes)
+      end
+
+      def [](key)
+        if @definition.collection?
+          super(key)
+        else
+          send(key)
+        end
+      end
+    end
+
+    class CollectionAttributes < SimpleDelegator
+      def initialize(definition)
+        @definition = definition
+        @collection = []
+        super(@collection)
+      end
+    end
+
+
 
     class << self
       def inherited(subclass)

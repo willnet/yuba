@@ -11,6 +11,7 @@ class Yuba::Form::Test < ActiveSupport::TestCase
       collection :posts do
         attribute :body
       end
+
     end
 
     collection :songs do
@@ -34,9 +35,14 @@ class Yuba::Form::Test < ActiveSupport::TestCase
   end
 
   test 'attribute works' do
-    form = form_class.new(model: model_class.new)
-    form.number = '1'
-    assert_equal form.number, '1' # TODO: coercion
+    form1 = form_class.new(model: model_class.new)
+    form1.number = '1'
+    assert_equal '1', form1.number # TODO: coercion
+
+    form2 = form_class.new(model: model_class.new)
+    form2.number = '2'
+    assert_equal '2', form2.number  # TODO: coercion
+    assert_equal '1', form1.number  # TODO: coercion
   end
 
   test 'nested attribute works' do
