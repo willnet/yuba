@@ -229,7 +229,15 @@ rails generate yuba:view_model artist_index
 ```
 
 ## Contributing
-Contribution directions go here.
+
+You can try to test by doing as following
+
+```
+git clone https://github.com/willnet/yuba.git
+cd yuba
+bundle
+bundle exec rake
+```
 
 ## License
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
