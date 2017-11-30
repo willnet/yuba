@@ -37,12 +37,12 @@ class Yuba::Form::Test < ActiveSupport::TestCase
   test 'attribute works' do
     form1 = form_class.new(model: model_class.new)
     form1.number = '1'
-    assert_equal '1', form1.number # TODO: coercion
+    assert_equal 1, form1.number
 
     form2 = form_class.new(model: model_class.new)
     form2.number = '2'
-    assert_equal '2', form2.number  # TODO: coercion
-    assert_equal '1', form1.number  # TODO: coercion
+    assert_equal 2, form2.number
+    assert_equal 1, form1.number
   end
 
   test 'nested attribute works' do

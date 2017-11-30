@@ -1,4 +1,5 @@
 require 'yuba/form/schema'
+require 'yuba/form/coercions'
 
 module Yuba
   class Form
@@ -35,8 +36,13 @@ module Yuba
         @options = options
       end
 
+      def type
+        options[:type]
+      end
+
       def coerce(value)
-        value
+        return unless value
+        Coercions.coerce(type: type, value: value)
       end
 
       def leaf?
