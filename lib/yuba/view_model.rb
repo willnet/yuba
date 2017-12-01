@@ -4,6 +4,14 @@ module Yuba
     self._properties = {}
 
     class << self
+      # You can register property to the class.
+      # Those registered by property need to be passed as arguments to the `initialize` except when `optional: true`
+      # is attached. You get `ArgumentError` if you don't pass `property` to `initialize`.
+      # Property is default to private. This means you can use it in internal the instance.
+      # If you it as public, use `public: true` option.
+      #
+      #   property :name, public: true
+      #   property :email, optional: true
       def property(name, options = {})
         _properties[name.to_sym] = options
       end
