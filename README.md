@@ -5,7 +5,7 @@
 
 ## warning
 
-This gem is now 0.0.x. It works but there must be occasional breaking changes to the API.
+Version of this gem is now 0.0.x. It works but there must be occasional breaking changes to the API.
 
 ## Summary
 
@@ -30,7 +30,7 @@ gem 'yuba'
 And then execute:
 
 ```bash
-$ bundle
+$ bundle install
 ```
 
 ## Support
@@ -73,32 +73,32 @@ view.post #=> NoMethodError
 
 Those registered by property need to be passed as arguments to the `initialize` except when `optional: true` is attached. You get ArgumentError if you don't pass `property` to `initialize`.
 
-Property is default to private. This means you can use it in internal the instance. If you it as public, use `public: true` option.
+Property is default to private. This means you can use it in internal the instance. If you want to use it as public, use `public: true` option.
 
 ### Auto Assign
 
-You can use ViewModel like following
+You can use ViewModel in a controller like following
 
 ```ruby
-class ArtistViewModel < Yuba::ViewModel
-  property :user, public: true
-
-  def post
-    user.latest_post
+class PostsController
+  def show
+    @view_model = PostViewModel.new(post: post, author: 'willnet')
   end
 end
-
-@view_model = ArtistViewModel.new(user: current_user)
 ```
 
-In view template, if you want to access user and post, you have to use `@view_model` instance variable like `@view_model.user.name`. if it feels troublesome, you can write like following
+In view template, if you want to access post and author, you have to use `@view_model` instance variable like `@view_model.post.title`. if it feels troublesome, you can write like following
 
 ```ruby
-view_model = ArtistViewModel.new(user: current_user)
-render view_model: view_model
+class PostsController
+  def show
+    view_model = PostViewModel.new(post: post, author: 'willnet')
+    render view_model: view_model
+  end
+end
 ```
 
-view_model option of render takes ViewModel, which get it's public methods (include public property) and assign them to instance variables in view template. So you can write `<%= @user.name %>`
+view_model option of render takes ViewModel, which get it's public methods (include public property) and assign them to instance variables in view template. So you can write `<%= @post.title %>` instead of `<%= @view_model.post.title %>`
 
 ## Service
 
@@ -151,12 +151,12 @@ end
 ```
 
 - `.property` method register property to the class like ViewModel.
-- `.call` invokes `#call` after assign arguments to properties.
+- `.call` invokes `#call` after assigning arguments as properties.
 - `#success?` returns `true` if you don't invoke `#fail!`
 
 ## Form
 
-Form is now just wrapper of [reform-rails](https://github.com/trailblazer/reform-rails).
+Form is just wrapper of [reform-rails](https://github.com/trailblazer/reform-rails) for now.
 
 You can see documentation [here](http://trailblazer.to/gems/reform/rails.html).
 
