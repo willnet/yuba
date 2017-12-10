@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    yuba (0.0.1)
+    yuba (0.0.2)
       dry-types
       rails (>= 4.2.0)
       reform-rails
