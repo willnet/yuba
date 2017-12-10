@@ -2,7 +2,7 @@ module Yuba
   module Rendering
     def render(*args)
       view_model_hash = args.find { |arg| arg.is_a?(Hash) && arg[:view_model] }
-      @_view_model = view_model_hash[:view_model] if view_model_hash[:view_model]
+      @_view_model = view_model_hash[:view_model] if view_model_hash && view_model_hash[:view_model]
       super
     end
 
