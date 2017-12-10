@@ -80,7 +80,7 @@ Property is default to private. This means you can use it in internal the instan
 You can use ViewModel in a controller like following
 
 ```ruby
-class PostsController
+class PostsController < ApplicationController
   def show
     @view_model = PostViewModel.new(post: post, author: 'willnet')
   end
@@ -90,7 +90,7 @@ end
 In view template, if you want to access post and author, you have to use `@view_model` instance variable like `@view_model.post.title`. if it feels troublesome, you can write like following
 
 ```ruby
-class PostsController
+class PostsController < ApplicationController
   def show
     view_model = PostViewModel.new(post: post, author: 'willnet')
     render view_model: view_model
