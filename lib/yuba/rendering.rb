@@ -17,7 +17,7 @@ module Yuba
     end
 
     def view_model_assigns
-      return {} unless @_view_model
+      return {} unless defined?(@_view_model)
       # TODO: get all public methods between self and Yuba::ViewModel
       #       now get only in self
       methods = @_view_model.public_methods(false)
