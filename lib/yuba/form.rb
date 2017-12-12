@@ -19,6 +19,16 @@ module Yuba
         return item if item
         self[args.first] = @definition.new
       end
+
+      def value
+        self
+      end
+
+      def value=(v)
+        v.each_with_index do |hash, i|
+          self[i].value = hash
+        end
+      end
     end
 
     module ContainerBehavior
@@ -42,19 +52,13 @@ module Yuba
       end
 
       def value=(v)
-        if definition.collection?
-          v.each_with_index do |hash, i|
-            attributes[i][key].value = value
-          end
-        elsif !definition.leaf?
+        if !self.class.leaf?
+          attributes[key].value = v
+        else
           v.each do |key, value|
             attributes[key].value = value
           end
-        else
-          attributes[key].value = v
         end
-        # 自身がcollectionなのかhashなのかで挙動が変わる
-        # collectionなら各attributesに再帰的にassign
       end
 
       def definitions
