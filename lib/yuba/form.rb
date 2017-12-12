@@ -35,6 +35,19 @@ module Yuba
           self[i].value = hash
         end
       end
+
+      def valid?(context = nil)
+        array = []
+        each do |item|
+          item.valid?
+          array << item.errors unless item.errors.empty?
+        end
+        array
+      end
+
+      def leaf?
+        false
+      end
     end
 
     module ContainerBehavior
@@ -58,7 +71,7 @@ module Yuba
       end
 
       def value=(v)
-        if self.class.leaf?
+        if leaf?
           attributes.value = v
         else
           v.each do |key, value|
@@ -67,12 +80,26 @@ module Yuba
         end
       end
 
+      def leaf?
+        self.class.leaf?
+      end
+
       def definitions
         self.class.definitions
       end
 
       included do
         include ActiveModel::Validations
+
+        define_method :valid? do |context = nil|
+          super(context)
+          attributes.each do |key, sub_attributes|
+            next if sub_attributes.leaf?
+            sub_attributes.valid?(context)
+            errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
+          end
+          errors.empty?
+        end
       end
 
       class_methods do
@@ -131,6 +158,10 @@ module Yuba
 
             def value=(v)
               @value = Coercions.coerce(type: self.class.options[:type], value: v)
+            end
+
+            def leaf?
+              true
             end
 
             class << self
