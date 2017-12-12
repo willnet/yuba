@@ -52,8 +52,8 @@ module Yuba
       end
 
       def value=(v)
-        if !self.class.leaf?
-          attributes[key].value = v
+        if self.class.leaf?
+          attributes.value = v
         else
           v.each do |key, value|
             attributes[key].value = value
