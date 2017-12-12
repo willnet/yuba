@@ -1,12 +1,18 @@
 require 'yuba'
 require 'yuba/form/coercions'
+require 'active_model/naming'
 
 module Yuba
   class Form
-    def initialize(model:)
+    class << self
+      def model_name
+        ActiveModel::Name.new(self, nil, 'Yuba::Form')
+      end
     end
-    # Hashでの入れ子とArrayでの入れ子で挙動が少し違うのをどう解決するか
-    # 同一の性質を持たないと入れ子にできないので、場合分けするしかないかな
+
+    def initialize(model:)
+      @_model = model
+    end
 
     class CollectionAttributeContainer < Array
       def initialize(definition, *args)
