@@ -37,16 +37,19 @@ module Yuba
       end
 
       def valid?(context = nil)
-        array = []
         each do |item|
           item.valid?
-          array << item.errors unless item.errors.empty?
+          errors << item.errors unless item.errors.empty?
         end
-        array
+        errors.empty?
       end
 
       def leaf?
         false
+      end
+
+      def errors
+        @errors ||= []
       end
     end
 
@@ -55,7 +58,7 @@ module Yuba
 
       def attributes
         return @attributes if @attributes
-        @attributes = {}
+        @attributes = ActiveSupport::HashWithIndifferentAccess.new
         definitions.each do |key, sub_definition|
           if sub_definition.collection?
             @attributes[key] = CollectionAttributeContainer.new(sub_definition)
@@ -106,7 +109,7 @@ module Yuba
         attr_accessor :name, :options
 
         def definitions
-          @definitions ||= {}
+          @definitions ||= ActiveSupport::HashWithIndifferentAccess.new
         end
 
         def leaf?
@@ -147,7 +150,7 @@ module Yuba
           klass = Class.new do
             include ContainerBehavior
           end
-          klass.name = name
+          klass.name = name.to_s
           klass.options = options
           klass
         end
@@ -177,7 +180,7 @@ module Yuba
             end
           end
 
-          klass.name = name
+          klass.name = name.to_s
           klass.options = options
           klass
         end
