@@ -85,7 +85,7 @@ module Yuba
           attribute(name, options, &block)
         end
 
-        def attribute(name, optiions = {}, &block)
+        def attribute(name, options = {}, &block)
           if block
             container = build_container_class(name, options)
             container.class_eval(&block)
@@ -120,7 +120,6 @@ module Yuba
             attr_reader :value
 
             def value=(v)
-              # options が nil なのでちゃんとoptionsが渡ってない
               @value = Coercions.coerce(type: self.class.options[:type], value: v)
             end
 
