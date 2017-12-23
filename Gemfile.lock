@@ -119,7 +119,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     rake (12.3.0)
     rubyzip (1.2.1)
-    selenium-webdriver (3.7.0)
+    selenium-webdriver (3.8.0)
       childprocess (~> 0.5)
       rubyzip (~> 1.0)
     sprockets (3.7.1)
