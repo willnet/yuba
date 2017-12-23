@@ -17,6 +17,6 @@ class Artist::CreateService < Yuba::Service
   private
 
   def form
-    @form ||= ArtistForm.new(artist)
+    @form ||= ArtistForm.new(model: artist)
   end
 end

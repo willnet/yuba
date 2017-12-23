@@ -5,6 +5,8 @@ require 'active_model/naming'
 
 module Yuba
   class Form
+    include Attributes
+
     class << self
       def model_name
         ActiveModel::Name.new(self, nil, 'Yuba::Form')
@@ -15,6 +17,8 @@ module Yuba
       @_model = model
     end
 
-    include Attributes
+    def to_model
+      @_model.to_model
+    end
   end
 end
