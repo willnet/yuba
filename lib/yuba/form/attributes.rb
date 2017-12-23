@@ -45,7 +45,7 @@ module Yuba
       extend ActiveSupport::Concern
 
       def attributes
-        return @attributes if @attributes
+        return @attributes if instance_variable_defined?(:@attributes)
         @attributes = ActiveSupport::HashWithIndifferentAccess.new
         definitions.each do |key, sub_definition|
           if sub_definition.collection?
