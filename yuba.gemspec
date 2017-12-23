@@ -20,8 +20,6 @@ Gem::Specification.new do |s|
   s.add_dependency "dry-types", "~> 0.12.2"
   s.add_development_dependency "sqlite3"
   s.add_development_dependency "pry-rails"
-  s.add_development_dependency "pry-rescue"
-  s.add_development_dependency "pry-stack_explorer"
   s.add_development_dependency "capybara"
   s.add_development_dependency "puma"
   s.add_development_dependency "selenium-webdriver"
