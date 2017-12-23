@@ -136,7 +136,7 @@ module Yuba
 
         def build_container_class(name, options)
           klass = Class.new do
-            include ContainerBehavior
+            include Attributes
           end
           klass.name = name.to_s
           klass.options = options
