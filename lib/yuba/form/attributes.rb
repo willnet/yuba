@@ -79,6 +79,10 @@ module Yuba
         self.class.definitions
       end
 
+      def options_for(attribute_name)
+        @attributes[attribute_name].options
+      end
+
       included do
         include ActiveModel::Validations
 

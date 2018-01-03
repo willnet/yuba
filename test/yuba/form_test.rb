@@ -3,6 +3,7 @@ require 'test_helper'
 class Yuba::Form::Test < ActiveSupport::TestCase
   simple_form_class = Class.new(Yuba::Form) do
     attribute :number, type: :int
+    attribute :name, uniqueness: true
     attribute :start_time, type: :date_time
 
     validates :number, numericality: { less_than: 100 }
