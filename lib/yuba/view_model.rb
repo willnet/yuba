@@ -1,5 +1,7 @@
 module Yuba
   class ViewModel
+    autoload :Rendering, 'yuba/view_model/rendering'
+
     class_attribute :_properties
     self._properties = {}
 
