@@ -3,10 +3,8 @@ require 'test_helper'
 class Yuba::Form::Test < ActiveSupport::TestCase
   simple_form_class = Class.new(Yuba::Form) do
     attribute :number, type: :int
-    attribute :name, uniqueness: true
+    attribute :name
     attribute :start_time, type: :date_time
-
-    validates :number, numericality: { less_than: 100 }
 
     def self.model_name
       ActiveModel::Name.new(self, nil, 'Simple')
@@ -16,7 +14,6 @@ class Yuba::Form::Test < ActiveSupport::TestCase
   nested_form_class = Class.new(Yuba::Form) do
     attribute :person do
       attribute :name
-      validates :name, presence: true
 
       collection :posts do
         attribute :body
@@ -80,21 +77,6 @@ class Yuba::Form::Test < ActiveSupport::TestCase
     assert_equal form.songs.first.title, 'Burn'
     assert_equal form.songs.first.author.name, 'deep purple'
     assert_equal form.songs.first.author.emails.first.email, 'deep@example.com'
-  end
-
-  test 'validation works' do
-    form = simple_form_class.new(model: model_class.new)
-    form.number = 10
-    assert form.valid?
-    form.number = 100
-    assert form.invalid?
-  end
-
-  test 'nested validation works' do
-    form = nested_form_class.new(model: model_class.new)
-    assert form.invalid?
-    form.person.name = 'willnet'
-    assert form.valid?
   end
 
   test '#assign_attributes works' do
