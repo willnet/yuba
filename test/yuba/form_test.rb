@@ -1,3 +1,5 @@
+requrie 'test_helper'
+
 class Yuba::Form::Test < ActiveSupport::TestCase
   form_class = Class.new(Yuba::Form) do
     property :number, type: :int

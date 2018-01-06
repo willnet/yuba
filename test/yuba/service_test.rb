@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class Yuba::Service::Test < ActiveSupport::TestCase
   service_class = Class.new(Yuba::Service) do
     property :name, public: true

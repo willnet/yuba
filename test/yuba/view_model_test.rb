@@ -1,3 +1,5 @@
+require 'test_helper'
+
 class Yuba::ViewModel::Test < ActiveSupport::TestCase
   view_model_class = Class.new(Yuba::ViewModel) do
     property :name, public: true
