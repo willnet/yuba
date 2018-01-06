@@ -80,7 +80,7 @@ module Yuba
       end
 
       def options_for(attribute_name)
-        @attributes[attribute_name].options
+        @attributes[attribute_name].class.options
       end
 
       included do

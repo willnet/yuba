@@ -1,4 +1,16 @@
 require 'test_helper'
+require 'active_record'
+
+ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+
+ActiveRecord::Schema.define do
+  create_table :users, force: true do |t|
+    t.string :name
+  end
+end
+
+class User < ActiveRecord::Base
+end
 
 class Yuba::Form::ValidationTest < ActiveSupport::TestCase
   simple_form_class = Class.new(Yuba::Form) do
@@ -6,6 +18,7 @@ class Yuba::Form::ValidationTest < ActiveSupport::TestCase
     attribute :name
 
     validates :number, numericality: { less_than: 100 }
+    validates :name, uniqueness: true
 
     def self.model_name
       ActiveModel::Name.new(self, nil, 'Simple')
@@ -35,11 +48,20 @@ class Yuba::Form::ValidationTest < ActiveSupport::TestCase
     end
   end
 
-  test 'validation works' do
-    form = simple_form_class.new(model: model_class.new)
+  test 'simple validation works' do
+    form = simple_form_class.new(model: User.new)
     form.number = 10
     assert form.valid?
     form.number = 100
+    assert form.invalid?
+  end
+
+  test 'uniqueness validation works' do
+    form = simple_form_class.new(model: User.new)
+    form.name = 'willnet'
+    form.number = 10
+    assert form.valid?
+    User.create!(name: 'willnet')
     assert form.invalid?
   end
 
