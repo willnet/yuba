@@ -9,3 +9,9 @@ require "active_record/railtie"
 require "yuba"
 Time.zone = 'Tokyo'
 require "minitest/autorun"
+
+
+require 'active_record'
+ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+
+require_relative 'yuba/support/models'
