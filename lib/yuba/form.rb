@@ -50,5 +50,23 @@ module Yuba
     def attributes=(attributes)
       assign_attributes(attributes)
     end
+
+    def push
+      attributes.each do |k, v|
+        if v.leaf?
+          model.send("#{k}=", v.value)
+        else
+          # TODO: recursive assign
+        end
+      end
+    end
+
+    def pull
+      return unless model.respond_to?(:attriutes)
+      model.attributes.each do |k, v|
+        # TODO: association
+        send("#{k}=", v) if respond_to? "#{k}="
+      end
+    end
   end
 end
