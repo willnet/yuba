@@ -19,13 +19,28 @@ class Yuba::ViewModel::Rendering::Test < ActiveSupport::TestCase
     include Yuba::ViewModel::Rendering
   end
 
-  view_model_class = Class.new(Yuba::ViewModel) do
+  simple_view_model_class = Class.new(Yuba::ViewModel) do
     property :name, public: true
+  end
+
+  view_model_class_with_predicate_method = Class.new(Yuba::ViewModel) do
+    property :name, public: true
+
+    def enable?
+      true
+    end
   end
 
   test 'it works' do
     action_controller = action_controller_class.new
-    view_model = view_model_class.new(name: 'willnet')
+    view_model = simple_view_model_class.new(name: 'willnet')
+    action_controller.render(view_model: view_model)
+    assert_equal({ name: 'willnet' }, action_controller.view_assigns)
+  end
+
+  test 'filter method names to use as instance variable' do
+    action_controller = action_controller_class.new
+    view_model = view_model_class_with_predicate_method.new(name: 'willnet')
     action_controller.render(view_model: view_model)
     assert_equal({ name: 'willnet' }, action_controller.view_assigns)
   end
