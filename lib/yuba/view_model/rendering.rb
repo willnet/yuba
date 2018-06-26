@@ -23,7 +23,7 @@ module Yuba
         #       now get only in self
         methods = @_view_model.public_methods(false)
         methods.reject! do |method_name|
-          %i[call initialize].include?(method_name)
+          %i[initialize].include?(method_name)
         end
         methods.inject({}) do |hash, method_name|
           hash[method_name] = @_view_model.public_send(method_name)
