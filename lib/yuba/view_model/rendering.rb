@@ -23,12 +23,17 @@ module Yuba
         #       now get only in self
         methods = @_view_model.public_methods(false)
         methods.reject! do |method_name|
-          %i[call initialize].include?(method_name)
+          %i[initialize].include?(method_name) ||
+            !valid_variable_name?(method_name)
         end
         methods.inject({}) do |hash, method_name|
           hash[method_name] = @_view_model.public_send(method_name)
           hash
         end
+      end
+
+      def valid_variable_name?(name)
+        name.match?(/\A[_a-z]\w*\z/)
       end
     end
   end
