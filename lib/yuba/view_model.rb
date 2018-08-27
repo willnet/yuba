@@ -20,22 +20,25 @@ module Yuba
     end
 
     def initialize(**args)
-      validate_arguments(args)
-      define_accessors(args)
+      @_args = args
+      validate_arguments
+      define_accessors
     end
 
     private
 
-    def validate_arguments(args)
-      args.each_key do |key|
+    attr_reader :_args
+
+    def validate_arguments
+      _args.each_key do |key|
         if !_properties.has_key?(key.to_sym) && !_properties.dig(key.to_sym, :optional)
           raise ArgumentError, "missing 'property :#{key}' in #{self.class.name} class"
         end
       end
     end
 
-    def define_accessors(args)
-      args.each do |key, value|
+    def define_accessors
+      _args.each do |key, value|
         public_method = _properties[key.to_sym][:public]
         define_singleton_method key do
           value
