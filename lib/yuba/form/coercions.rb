@@ -19,7 +19,7 @@ module Yuba
           when :float
             value.to_f
           when :decimal
-            BigDecimal.new(value)
+            BigDecimal(value)
           when :array
             value.empty? ? [] : value
           when :hash

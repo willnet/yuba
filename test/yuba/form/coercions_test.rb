@@ -39,7 +39,7 @@ class Yuba::Form::Coercions::Test < ActiveSupport::TestCase
     form.float = '3.5'
     assert 3.5, form.float
     form.decimal = '123'
-    assert BigDecimal.new(123), form
+    assert BigDecimal(123), form
     form.array = ''
     assert Array.new, form.array
     form.hash = ''
