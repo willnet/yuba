@@ -23,6 +23,10 @@ class Yuba::ViewModel::Rendering::Test < ActiveSupport::TestCase
     property :name, public: true
   end
 
+  inherited_view_model_class = Class.new(simple_view_model_class) do
+    property :email, public: true
+  end
+
   view_model_class_with_predicate_method = Class.new(Yuba::ViewModel) do
     property :name, public: true
 
@@ -43,5 +47,12 @@ class Yuba::ViewModel::Rendering::Test < ActiveSupport::TestCase
     view_model = view_model_class_with_predicate_method.new(name: 'willnet')
     action_controller.render(view_model: view_model)
     assert_equal({ name: 'willnet' }, action_controller.view_assigns)
+  end
+
+  test 'subclass of subclass of Yuba::ViewModel works' do
+    action_controller = action_controller_class.new
+    view_model = inherited_view_model_class.new(name: 'willnet', email: 'test@example.com')
+    action_controller.render(view_model: view_model)
+    assert_equal({ name: 'willnet', email: 'test@example.com' }, action_controller.view_assigns)
   end
 end
