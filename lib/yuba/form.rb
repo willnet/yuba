@@ -62,7 +62,7 @@ module Yuba
     end
 
     def pull
-      return unless model.respond_to?(:attriutes)
+      return unless model.respond_to?(:attributes)
       model.attributes.each do |k, v|
         # TODO: association
         send("#{k}=", v) if respond_to? "#{k}="
