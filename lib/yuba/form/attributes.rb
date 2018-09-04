@@ -2,30 +2,36 @@ require 'delegate'
 
 module Yuba
   class Form
-    class CollectionAttributesContainer < Array
-      def initialize(definition, *args)
+    class CollectionAttributesContainer
+      attr_accessor :items
+
+      def initialize(definition)
+        self.items = []
         @definition = definition
-        super(*args)
       end
 
       def [](*args)
-        item = super
+        item = items[*args]
         return item if item
-        self[args.first] = @definition.new
+        items[args.first] = @definition.new
       end
 
       def value
         self
       end
 
+      def each(&block)
+        items.each(&block)
+      end
+
       def value=(v)
         v.each_with_index do |hash, i|
-          self[i].value = hash
+          items[i].value = hash
         end
       end
 
       def valid?(context = nil)
-        each do |item|
+        items.each do |item|
           item.valid?
           errors << item.errors unless item.errors.empty?
         end
