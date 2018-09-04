@@ -3,6 +3,8 @@ require 'delegate'
 module Yuba
   class Form
     class CollectionAttributesContainer
+      include Enumerable
+
       attr_accessor :items
 
       def initialize(definition)
@@ -26,7 +28,7 @@ module Yuba
 
       def value=(v)
         v.each_with_index do |hash, i|
-          items[i].value = hash
+          self[i].value = hash
         end
       end
 
