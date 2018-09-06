@@ -147,7 +147,7 @@ module Yuba
         end
 
         def build_container_class(name, options)
-          klass = Class.new do
+          klass = Class.new(Container) do
             include Attributes
           end
           klass.name = name.to_s
@@ -156,35 +156,38 @@ module Yuba
         end
 
         def build_leaf_class(name, options)
-          klass = Class.new do
-            attr_reader :value
-
-            def value=(v)
-              @value = Coercions.coerce(type: self.class.options[:type], value: v)
-            end
-
-            def leaf?
-              true
-            end
-
-            class << self
-              attr_accessor :name, :options
-
-              def leaf?
-                true
-              end
-
-              def collection?
-                false
-              end
-            end
-          end
-
+          klass = Class.new(Value)
           klass.name = name.to_s
           klass.options = options
           klass
         end
       end
     end
+
+    class Value
+      attr_reader :value
+
+      def value=(v)
+        @value = Coercions.coerce(type: self.class.options[:type], value: v)
+      end
+
+      def leaf?
+        true
+      end
+
+      class << self
+        attr_accessor :name, :options
+
+        def leaf?
+          true
+        end
+
+        def collection?
+          false
+        end
+      end
+    end
+
+    class Container; end
   end
 end
