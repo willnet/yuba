@@ -51,6 +51,7 @@ module Yuba
 
     module Attributes
       extend ActiveSupport::Concern
+      include ActiveModel::Validations
 
       def attributes
         return @attributes if instance_variable_defined?(:@attributes)
@@ -91,18 +92,14 @@ module Yuba
         @attributes[attribute_name].class.options
       end
 
-      included do
-        include ActiveModel::Validations
-
-        define_method :valid? do |context = nil|
-          super(context)
-          attributes.each do |key, sub_attributes|
-            next if sub_attributes.leaf?
-            sub_attributes.valid?(context)
-            errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
-          end
-          errors.empty?
+      def valid?(context = nil)
+        super(context)
+        attributes.each do |key, sub_attributes|
+          next if sub_attributes.leaf?
+          sub_attributes.valid?(context)
+          errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
         end
+        errors.empty?
       end
 
       class_methods do
