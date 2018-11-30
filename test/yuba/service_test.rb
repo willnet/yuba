@@ -10,6 +10,11 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     end
   end
 
+  # For checking https://github.com/willnet/yuba/issues/9
+  Class.new(Yuba::Service) do
+    property :name
+  end
+
   test 'property works' do
     service = service_class.new(name: 'willnet', password: 'password')
     assert_equal service.name, 'willnet'
