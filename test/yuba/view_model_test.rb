@@ -7,6 +7,11 @@ class Yuba::ViewModel::Test < ActiveSupport::TestCase
     property :password, optional: true
   end
 
+  # For checking https://github.com/willnet/yuba/issues/9
+  Class.new(Yuba::ViewModel) do
+    property :name
+  end
+
   test 'property works' do
     view_model = view_model_class.new(name: 'willnet', password: 'password')
     assert_equal view_model.name, 'willnet'

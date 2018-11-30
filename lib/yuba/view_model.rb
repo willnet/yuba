@@ -15,7 +15,7 @@ module Yuba
       #   property :name, public: true
       #   property :email, optional: true
       def property(name, options = {})
-        _properties[name.to_sym] = options
+        self._properties = _properties.merge(name.to_sym => options)
       end
     end
 
