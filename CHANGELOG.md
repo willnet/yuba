@@ -1,3 +1,8 @@
+## 0.0.4
+
+- [Fix property settings can be overwritten by willnet · Pull Request #12 · willnet/yuba](https://github.com/willnet/yuba/pull/12)
+- [Add version dependency of dry-types to fix error · willnet/yuba@efb3a1a](https://github.com/willnet/yuba/commit/efb3a1a2c9479b8d278748b917b4c9406de1c6c0)
+
 ## 0.0.3
 
 - [Fix propertiy settings can be overwritten by willnet · Pull Request #11 · willnet/yuba](https://github.com/willnet/yuba/pull/11)
