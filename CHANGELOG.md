@@ -1,5 +1,7 @@
 ## 0.0.3
 
+- [Fix propertiy settings can be overwritten by willnet · Pull Request #11 · willnet/yuba](https://github.com/willnet/yuba/pull/11)
+- [Filter method name by willnet · Pull Request #8 · willnet/yuba](https://github.com/willnet/yuba/pull/8)
 - [Enable use `call` as instance variable in view template because it is… · willnet/yuba@b0c59c7](https://github.com/willnet/yuba/commit/b0c59c7b50ca1cb16e18fff24f23b4ae690c8c3a)
 - [Filter method names to use them as instance variables · willnet/yuba@7ce322f](https://github.com/willnet/yuba/commit/7ce322f37ab5448134f376ad360493d1d83cfec1)
 
