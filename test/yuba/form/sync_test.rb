@@ -34,6 +34,6 @@ class Yuba::Form::SyncTest < ActiveSupport::TestCase
     model = model_class.new(name: 'willnet')
     form = simple_form_class.new(model: model)
     form.pull
-    assert_equal({ name: 'willnet'}, form.attributes)
+    assert_equal({ 'name' => 'willnet'}, form.attributes)
   end
 end

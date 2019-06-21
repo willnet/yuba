@@ -52,7 +52,7 @@ module Yuba
     end
 
     def push
-      attributes.each do |k, v|
+      _attributes.each do |k, v|
         if v.leaf?
           model.send("#{k}=", v.value)
         else

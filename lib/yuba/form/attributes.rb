@@ -54,16 +54,42 @@ module Yuba
       include ActiveModel::Validations
 
       def attributes
-        return @attributes if instance_variable_defined?(:@attributes)
-        @attributes = ActiveSupport::HashWithIndifferentAccess.new
-        definitions.each do |key, sub_definition|
-          if sub_definition.collection?
-            @attributes[key] = CollectionAttributesContainer.new(sub_definition)
+        @attributes ||= deep_convert({}, _attributes)
+      end
+
+      def deep_convert(result, attrs)
+        attrs.each do |k, v|
+          if v.leaf?
+            result[k] = v.value
+          elsif v.collection?
+            result[k] = []
+            deep_convert_array(result[k], v)
           else
-            @attributes[key] = sub_definition.new
+            result[k] = {}
+            deep_convert(result[k], v)
           end
         end
-        @attributes
+        result
+      end
+
+      def deep_covert_array(result, attrs)
+        attrs.each do |v|
+          result << deep_convert(result, v)
+        end
+        result
+      end
+
+      def _attributes
+        return @_attributes if instance_variable_defined?(:@_attributes)
+        @_attributes = ActiveSupport::HashWithIndifferentAccess.new
+        definitions.each do |key, sub_definition|
+          if sub_definition.collection?
+            @_attributes[key] = CollectionAttributesContainer.new(sub_definition)
+          else
+            @_attributes[key] = sub_definition.new
+          end
+        end
+        @_attributes
       end
 
       def value
@@ -72,10 +98,10 @@ module Yuba
 
       def value=(v)
         if leaf?
-          attributes.value = v
+          _attributes.value = v
         else
           v.each do |key, value|
-            attributes[key].value = value
+            _attributes[key].value = value
           end
         end
       end
@@ -89,12 +115,12 @@ module Yuba
       end
 
       def options_for(attribute_name)
-        @attributes[attribute_name].class.options
+        @_attributes[attribute_name].class.options
       end
 
       def valid?(context = nil)
         super(context)
-        attributes.each do |key, sub_attributes|
+        _attributes.each do |key, sub_attributes|
           next if sub_attributes.leaf?
           sub_attributes.valid?(context)
           errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
@@ -134,12 +160,12 @@ module Yuba
 
           define_method name do
             # leafならleafの値、nodeならnode自身
-            attributes[name].value
+            _attributes[name].value
           end
 
           define_method "#{name}=" do |value|
             # なかったらraise
-            attributes[name].value = value
+            _attributes[name].value = value
           end
         end
 
