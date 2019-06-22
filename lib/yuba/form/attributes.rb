@@ -1,5 +1,3 @@
-require 'delegate'
-
 module Yuba
   class Form
     module Attributes
@@ -117,14 +115,12 @@ module Yuba
     end
 
     class Value
+      delegate :leaf?, :collection?, to: self
+
       attr_reader :value
 
       def value=(v)
         @value = Coercions.coerce(type: self.class.options[:type], value: v)
-      end
-
-      def leaf?
-        true
       end
 
       class << self
@@ -141,9 +137,7 @@ module Yuba
     end
 
     class Container
-      def leaf?
-        false
-      end
+      delegate :leaf?, :collection?, to: self
 
       def value
         self
