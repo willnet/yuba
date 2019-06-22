@@ -2,53 +2,6 @@ require 'delegate'
 
 module Yuba
   class Form
-    class CollectionAttributesContainer
-      include Enumerable
-
-      attr_accessor :items
-
-      def initialize(definition)
-        self.items = []
-        @definition = definition
-      end
-
-      def [](*args)
-        item = items[*args]
-        return item if item
-        items[args.first] = @definition.new
-      end
-
-      def value
-        self
-      end
-
-      def each(&block)
-        items.each(&block)
-      end
-
-      def value=(v)
-        v.each_with_index do |hash, i|
-          self[i].value = hash
-        end
-      end
-
-      def valid?(context = nil)
-        items.each do |item|
-          item.valid?
-          errors << item.errors unless item.errors.empty?
-        end
-        errors.empty?
-      end
-
-      def leaf?
-        false
-      end
-
-      def errors
-        @errors ||= []
-      end
-    end
-
     module Attributes
       extend ActiveSupport::Concern
       include ActiveModel::Validations
@@ -92,24 +45,6 @@ module Yuba
         @_attributes
       end
 
-      def value
-        self
-      end
-
-      def value=(v)
-        if leaf?
-          _attributes.value = v
-        else
-          v.each do |key, value|
-            _attributes[key].value = value
-          end
-        end
-      end
-
-      def leaf?
-        self.class.leaf?
-      end
-
       def definitions
         self.class.definitions
       end
@@ -129,14 +64,8 @@ module Yuba
       end
 
       class_methods do
-        attr_accessor :name, :options
-
         def definitions
           @definitions ||= ActiveSupport::HashWithIndifferentAccess.new
-        end
-
-        def leaf?
-          false
         end
 
         def collection?
@@ -211,6 +140,75 @@ module Yuba
       end
     end
 
-    class Container; end
+    class Container
+      def leaf?
+        false
+      end
+
+      def value
+        self
+      end
+
+      def value=(v)
+        v.each do |key, value|
+          _attributes[key].value = value
+        end
+      end
+
+      class << self
+        attr_accessor :name, :options
+
+        def leaf?
+          false
+        end
+      end
+    end
+
+    class CollectionAttributesContainer
+      include Enumerable
+
+      attr_accessor :items
+
+      def initialize(definition)
+        self.items = []
+        @definition = definition
+      end
+
+      def [](*args)
+        item = items[*args]
+        return item if item
+        items[args.first] = @definition.new
+      end
+
+      def value
+        self
+      end
+
+      def each(&block)
+        items.each(&block)
+      end
+
+      def value=(v)
+        v.each_with_index do |hash, i|
+          self[i].value = hash
+        end
+      end
+
+      def valid?(context = nil)
+        items.each do |item|
+          item.valid?
+          errors << item.errors unless item.errors.empty?
+        end
+        errors.empty?
+      end
+
+      def leaf?
+        false
+      end
+
+      def errors
+        @errors ||= []
+      end
+    end
   end
 end
