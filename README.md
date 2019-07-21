@@ -178,6 +178,7 @@ class ArtistsController < ApplicationController
       render :new
     end
   end
+end
 ```
 
 ```ruby
