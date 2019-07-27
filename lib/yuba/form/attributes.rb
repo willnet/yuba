@@ -4,63 +4,6 @@ module Yuba
       extend ActiveSupport::Concern
       include ActiveModel::Validations
 
-      def attributes
-        @attributes ||= deep_convert({}, _attributes)
-      end
-
-      def deep_convert(result, attrs)
-        attrs.each do |k, v|
-          if v.leaf?
-            result[k] = v.value
-          elsif v.collection?
-            result[k] = []
-            deep_convert_array(result[k], v)
-          else
-            result[k] = {}
-            deep_convert(result[k], v)
-          end
-        end
-        result
-      end
-
-      def deep_covert_array(result, attrs)
-        attrs.each do |v|
-          result << deep_convert(result, v)
-        end
-        result
-      end
-
-      def _attributes
-        return @_attributes if instance_variable_defined?(:@_attributes)
-        @_attributes = ActiveSupport::HashWithIndifferentAccess.new
-        definitions.each do |key, sub_definition|
-          if sub_definition.collection?
-            @_attributes[key] = CollectionAttributesContainer.new(sub_definition)
-          else
-            @_attributes[key] = sub_definition.new
-          end
-        end
-        @_attributes
-      end
-
-      def definitions
-        self.class.definitions
-      end
-
-      def options_for(attribute_name)
-        @_attributes[attribute_name].class.options
-      end
-
-      def valid?(context = nil)
-        super(context)
-        _attributes.each do |key, sub_attributes|
-          next if sub_attributes.leaf?
-          sub_attributes.valid?(context)
-          errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
-        end
-        errors.empty?
-      end
-
       class_methods do
         def definitions
           @definitions ||= ActiveSupport::HashWithIndifferentAccess.new
@@ -111,6 +54,65 @@ module Yuba
           klass.options = options
           klass
         end
+      end
+
+      def attributes
+        @attributes ||= deep_convert({}, _attributes)
+      end
+
+      def valid?(context = nil)
+        super(context)
+        _attributes.each do |key, sub_attributes|
+          next if sub_attributes.leaf?
+          sub_attributes.valid?(context)
+          errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
+        end
+        errors.empty?
+      end
+
+      def options_for(attribute_name)
+        @_attributes[attribute_name].class.options
+      end
+
+      private
+
+      def deep_convert(result, attrs)
+        attrs.each do |k, v|
+          if v.leaf?
+            result[k] = v.value
+          elsif v.collection?
+            result[k] = []
+            deep_convert_array(result[k], v)
+          else
+            result[k] = {}
+            deep_convert(result[k], v)
+          end
+        end
+        result
+      end
+
+      def deep_covert_array(result, attrs)
+        attrs.each do |v|
+          result << deep_convert(result, v)
+        end
+        result
+      end
+
+      def _attributes
+        return @_attributes if instance_variable_defined?(:@_attributes)
+        @_attributes = ActiveSupport::HashWithIndifferentAccess.new
+        definitions.each do |key, sub_definition|
+          if sub_definition.collection?
+            @_attributes[key] = CollectionAttributesContainer.new(sub_definition)
+          else
+            @_attributes[key] = sub_definition.new
+          end
+        end
+        @_attributes
+      end
+
+      def definitions
+        self.class.definitions
       end
     end
 
