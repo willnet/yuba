@@ -9,24 +9,18 @@ module Yuba
           @definitions ||= ActiveSupport::HashWithIndifferentAccess.new
         end
 
-        def collection?
-          !!options[:collection]
-        end
-
         def collection(name, options = {}, &block)
           options[:collection] = true
           attribute(name, options, &block)
         end
 
         def attribute(name, options = {}, &block)
-          if block
-            container = build_container_class(name, options)
-            container.class_eval(&block)
-            definitions[name] = container
-          else
-            leaf = build_leaf_class(name, options)
-            definitions[name] = leaf
-          end
+          klass = if block
+                    build_container_class(name, options, &block)
+                  else
+                    build_leaf_class(name, options)
+                  end
+          definitions[name] = klass
 
           define_method name do
             # leafならleafの値、nodeならnode自身
@@ -39,12 +33,15 @@ module Yuba
           end
         end
 
-        def build_container_class(name, options)
+        private
+
+        def build_container_class(name, options, &block)
           klass = Class.new(Container) do
             include Attributes
           end
           klass.name = name.to_s
           klass.options = options
+          klass.class_eval(&block)
           klass
         end
 
@@ -62,10 +59,10 @@ module Yuba
 
       def valid?(context = nil)
         super(context)
-        _attributes.each do |key, sub_attributes|
-          next if sub_attributes.leaf?
-          sub_attributes.valid?(context)
-          errors[key] << sub_attributes.errors unless sub_attributes.errors.empty?
+        _attributes.each do |key, attr|
+          next if attr.leaf?
+          attr.valid?(context)
+          errors[key] << attr.errors unless attr.errors.empty?
         end
         errors.empty?
       end
@@ -101,12 +98,8 @@ module Yuba
       def _attributes
         return @_attributes if instance_variable_defined?(:@_attributes)
         @_attributes = ActiveSupport::HashWithIndifferentAccess.new
-        definitions.each do |key, sub_definition|
-          if sub_definition.collection?
-            @_attributes[key] = CollectionAttributesContainer.new(sub_definition)
-          else
-            @_attributes[key] = sub_definition.new
-          end
+        definitions.each do |key, definition|
+          @_attributes[key] = definition.build
         end
         @_attributes
       end
@@ -127,6 +120,7 @@ module Yuba
 
       class << self
         attr_accessor :name, :options
+        alias_method :build, :new
 
         def leaf?
           true
@@ -154,19 +148,29 @@ module Yuba
       class << self
         attr_accessor :name, :options
 
+        def build
+          collection? ? ContainerCollection.new(self) : new
+        end
+
         def leaf?
           false
+        end
+
+        def collection?
+          options[:collection]
         end
       end
     end
 
-    class CollectionAttributesContainer
+    class ContainerCollection
       include Enumerable
 
       attr_accessor :items
 
+      delegate :each, to: :items
+
       def initialize(definition)
-        self.items = []
+        @items = []
         @definition = definition
       end
 
@@ -180,8 +184,8 @@ module Yuba
         self
       end
 
-      def each(&block)
-        items.each(&block)
+      def leaf?
+        false
       end
 
       def value=(v)
@@ -196,10 +200,6 @@ module Yuba
           errors << item.errors unless item.errors.empty?
         end
         errors.empty?
-      end
-
-      def leaf?
-        false
       end
 
       def errors
