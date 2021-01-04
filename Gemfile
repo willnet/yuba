@@ -5,8 +5,9 @@ source 'https://rubygems.org'
 # development dependencies will be added by default to the :development group.
 gemspec
 
-gem 'rails', '5.2.4.4'
-gem 'sqlite3', '< 1.4.0'
+gem 'rails', '6.0.3.4'
+gem 'sqlite3'
+gem 'pry'
 
 # Declare any dependencies that are still in development here instead of in
 # your gemspec. These might include edge Rails or gems from your path or
