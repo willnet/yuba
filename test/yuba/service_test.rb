@@ -25,6 +25,10 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     assert_raises(ArgumentError) { service_class.new(name: 'willnet', age: 37) }
   end
 
+  test 'raise argument error on initialize without needed properties' do
+    assert_raises(ArgumentError) { service_class.new }
+  end
+
   test '.call return self' do
     assert service_class.call.is_a? Yuba::Service
   end

@@ -45,6 +45,12 @@ module Yuba
           raise ArgumentError, "missing 'property :#{key}' in #{self.class.name} class"
         end
       end
+
+      required_keys = _required_properties.keys
+      missing_keys = required_keys - args.keys
+      unless missing_keys.empty?
+        raise ArgumentError, "missing required arguments: #{missing_keys.join(',')}"
+      end
     end
 
     def define_accessors(args)
@@ -55,6 +61,10 @@ module Yuba
         end
         self.singleton_class.class_eval { private key.to_sym } unless public_method
       end
+    end
+
+    def _required_properties
+      _properties.reject { |_, value| value[:optional] }
     end
   end
 end
