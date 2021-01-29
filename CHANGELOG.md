@@ -1,3 +1,8 @@
+## 0.0.5
+
+- Raise error on initialize without required properties(Yuba::Service)
+- drop old rails support
+
 ## 0.0.4
 
 - [Fix property settings can be overwritten by willnet · Pull Request #12 · willnet/yuba](https://github.com/willnet/yuba/pull/12)
