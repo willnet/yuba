@@ -21,7 +21,7 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     assert_equal service.singleton_class.private_method_defined?(:password), true
   end
 
-  test 'raise argument error on assinging key exclude property' do
+  test 'raise argument error on assigning key exclude property' do
     assert_raises(ArgumentError) { service_class.new(name: 'willnet', age: 37) }
   end
 
