@@ -37,6 +37,26 @@ module Yuba
       !@_success
     end
 
+    def has_property?(property)
+      _properties.has_key?(property.to_sym)
+    end
+
+    def has_required_property?(property)
+      has_property?(property) && !_properties.dig(property.to_sym, :optional)
+    end
+
+    def has_optional_property?(property)
+      has_property?(property) && !has_required_property?(property)
+    end
+
+    def has_public_property?(property)
+      has_property?(property) && !has_private_property?(property)
+    end
+
+    def has_private_property?(property)
+      has_property?(property) && !_properties.dig(property.to_sym, :public)
+    end
+
     private
 
     def validate_arguments(args)

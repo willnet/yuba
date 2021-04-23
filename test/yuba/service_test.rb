@@ -59,4 +59,38 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     service.fail!
     assert_equal service.failure?, true
   end
+
+  test '#has_property? return true if it has the property' do
+    service = service_class.new(name: 'willnet')
+    assert_equal service.has_property?(:name), true
+    assert_equal service.has_property?(:hoge), false
+  end
+
+  test '#has_required_property? return true if it has the required property' do
+    service = service_class.new(name: 'willnet')
+    assert_equal service.has_required_property?(:name), true
+    assert_equal service.has_required_property?(:address), false
+    assert_equal service.has_required_property?(:hoge), false
+  end
+
+  test '#has_optional_property? return true if it has the optional property' do
+    service = service_class.new(name: 'willnet')
+    assert_equal service.has_optional_property?(:name), false
+    assert_equal service.has_optional_property?(:address), true
+    assert_equal service.has_optional_property?(:hoge), false
+  end
+
+  test '#has_public_property? return true if it has the public property' do
+    service = service_class.new(name: 'willnet')
+    assert_equal service.has_public_property?(:name), true
+    assert_equal service.has_public_property?(:address), false
+    assert_equal service.has_public_property?(:hoge), false
+  end
+
+  test '#has_private_property? return true if it has the private property' do
+    service = service_class.new(name: 'willnet')
+    assert_equal service.has_private_property?(:name), false
+    assert_equal service.has_private_property?(:address), true
+    assert_equal service.has_private_property?(:hoge), false
+  end
 end
