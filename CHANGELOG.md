@@ -1,3 +1,12 @@
+## 0.0.6
+
+- Add following methods
+  - Yuba::Service#has_property?
+  - Yuba::Service#has_public_property?
+  - Yuba::Service#has_private_property?
+  - Yuba::Service#has_required_property?
+  - Yuba::Service#has_optional_property?
+    
 ## 0.0.5
 
 - Raise error on initialize without required properties(Yuba::Service)
