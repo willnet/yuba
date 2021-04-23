@@ -10,6 +10,11 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     end
   end
 
+  blank_service_class = Class.new(Yuba::Service) do
+    def call
+    end
+  end
+
   # For checking https://github.com/willnet/yuba/issues/9
   Class.new(Yuba::Service) do
     property :name
@@ -30,27 +35,27 @@ class Yuba::Service::Test < ActiveSupport::TestCase
   end
 
   test '.call return self' do
-    assert service_class.call.is_a? Yuba::Service
+    assert blank_service_class.call.is_a? Yuba::Service
   end
 
   test '#success? return true by default' do
-    service = service_class.new
+    service = blank_service_class.new
     assert_equal service.success?, true
   end
 
   test '#success? return false after call #fail!' do
-    service = service_class.new
+    service = blank_service_class.new
     service.fail!
     assert_equal service.success?, false
   end
 
   test '#failure? return false by default' do
-    service = service_class.new
+    service = blank_service_class.new
     assert_equal service.failure?, false
   end
 
   test '#failure? return true after call #fail!' do
-    service = service_class.new
+    service = blank_service_class.new
     service.fail!
     assert_equal service.failure?, true
   end
