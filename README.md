@@ -35,8 +35,8 @@ $ bundle install
 
 ## Support
 
-- Rails 4.2+
-- Ruby 2.2+
+- Rails 5.2+
+- Ruby 2.5+
 
 ## ViewModel
 
@@ -153,6 +153,17 @@ end
 - `.property` method register property to the class like ViewModel.
 - `.call` invokes `#call` after assigning arguments as properties.
 - `#success?` returns `true` if you don't invoke `#fail!`
+
+You have inspection methods for properties.
+
+```ruby
+service = CreatePostService.new(user: someuser)
+service.has_property?(:user) #=> true
+service.has_public_property?(:user) #=> true
+service.has_private_property?(:user) #=> false
+service.has_required_property?(:user) #=> true
+service.has_optional_property?(:user) #=> false
+```
 
 ## Form
 
