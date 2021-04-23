@@ -60,6 +60,13 @@ class Yuba::Service::Test < ActiveSupport::TestCase
     assert_equal service.failure?, true
   end
 
+  test '#has_value? return true if its property has value' do
+    service = service_class.new(name: 'willnet', address: 'tokyo')
+    assert_equal service.has_value?(:address), true
+    assert_equal service.has_value?(:password), false
+    assert_equal service.has_value?(:hoge), false
+  end
+
   test '#has_property? return true if it has the property' do
     service = service_class.new(name: 'willnet')
     assert_equal service.has_property?(:name), true

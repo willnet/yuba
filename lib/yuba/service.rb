@@ -57,6 +57,10 @@ module Yuba
       has_property?(property) && !_properties.dig(property.to_sym, :public)
     end
 
+    def has_value?(property)
+      has_property?(property) && respond_to?(property, true) && !send(property).nil?
+    end
+
     private
 
     def validate_arguments(args)

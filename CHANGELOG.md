@@ -1,3 +1,7 @@
+## 0.0.7
+
+- Add Yuba::Service#has_value?
+
 ## 0.0.6
 
 - Add following methods

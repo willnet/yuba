@@ -159,6 +159,7 @@ You have inspection methods for properties.
 ```ruby
 service = CreatePostService.new(user: someuser)
 service.has_property?(:user) #=> true
+service.has_value?(:user) #=> true
 service.has_public_property?(:user) #=> true
 service.has_private_property?(:user) #=> false
 service.has_required_property?(:user) #=> true
