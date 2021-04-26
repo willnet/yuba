@@ -1,3 +1,7 @@
+## 0.0.8
+
+- Add Yuba::Service#value? as the alias of Yuba::Service#has_value? 
+
 ## 0.0.7
 
 - Add Yuba::Service#has_value?
