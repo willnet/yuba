@@ -61,6 +61,8 @@ module Yuba
       has_property?(property) && respond_to?(property, true) && !send(property).nil?
     end
 
+    alias_method :value?, :has_value?
+
     private
 
     def validate_arguments(args)
