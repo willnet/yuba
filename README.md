@@ -5,19 +5,18 @@
 
 ## warning
 
-Version of this gem is now 0.0.x. It works but there must be occasional breaking changes to the API.
+The version of this gem is now 0.0.x. It works, but there must be occasional breaking changes to the API.
 
 ## Summary
 
-Yuba add new layers to rails.
+Yuba adds new layers to rails.
 
 - Service
 - Form
 - ViewModel
 
-It is convenient to use them in combination, but you can use them even by themselves.
-
-If you have difficulties with large rails application, Yuba help you.
+It is convenient to use them in combination, but you can use them even individually.
+If you have difficulties with a large rails application, Yuba helps you.
 
 ## Installation
 
@@ -40,7 +39,7 @@ $ bundle install
 
 ## ViewModel
 
-ViewModel is useful when there are many instance variables in controller.
+ViewModel is useful when there are many instance variables in controllers.
 
 ```ruby
 class PostViewModel < Yuba::ViewModel
@@ -69,15 +68,15 @@ view.post #=> NoMethodError
 
 ### property
 
-`.property` method register property to the class.
+`.property` method registers property to the class.
 
-Those registered by property need to be passed as arguments to the `initialize` except when `optional: true` is attached. You get ArgumentError if you don't pass `property` to `initialize`.
+We need to pass those properties as arguments to the `initialize` except when `optional: true` is attached. You get ArgumentError if you don't pass `property` to `initialize`.
 
-Property is default to private. This means you can use it in internal the instance. If you want to use it as public, use `public: true` option.
+Property is default to private. It means you can use it in the internal instance. If you want to use it as public, use `public: true` option.
 
 ### Auto Assign
 
-You can use ViewModel in a controller like following
+You can use ViewModel in a controller like the following.
 
 ```ruby
 class PostsController < ApplicationController
@@ -98,11 +97,11 @@ class PostsController < ApplicationController
 end
 ```
 
-view_model option of render takes ViewModel, which get it's public methods (include public property) and assign them to instance variables in view template. So you can write `<%= @post.title %>` instead of `<%= @view_model.post.title %>`
+view_model option of render takes ViewModel, which gets its public methods (include public property) and assigns them to instance variables in the view template. So you can write `<%= @post.title %>` instead of `<%= @view_model.post.title %>`
 
 ## Service
 
-Service is useful when controller has many application logic.
+Service is valuable when a controller has many application logic.
 
 ```ruby
 class PostController < ApplicationController
@@ -150,7 +149,7 @@ class CreatePostService < Yuba::Service
 end
 ```
 
-- `.property` method register property to the class like ViewModel.
+- `.property` method registers property to the class like ViewModel.
 - `.call` invokes `#call` after assigning arguments as properties.
 - `#success?` returns `true` if you don't invoke `#fail!`
 
@@ -243,7 +242,7 @@ rails generate yuba:view_model artist_index
 
 ## Contributing
 
-You can try to test by doing as following
+You can try to test by doing as following.
 
 ```
 git clone https://github.com/willnet/yuba.git
