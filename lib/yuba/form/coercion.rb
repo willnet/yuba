@@ -4,7 +4,7 @@ module Yuba
   class Form < ::Reform::Form
     module Coercion
       module Types
-        include Dry::Types.module
+        include Dry.Types
       end
 
       module ClassMethods
