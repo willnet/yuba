@@ -19,10 +19,4 @@ Gem::Specification.new do |s|
   s.add_dependency "rails", ">= 5.2.0"
   s.add_dependency "reform-rails"
   s.add_dependency "dry-types", ">= 1.0"
-  s.add_development_dependency "sqlite3"
-  s.add_development_dependency "pry-rails"
-  s.add_development_dependency "capybara"
-  s.add_development_dependency "puma"
-  s.add_development_dependency "selenium-webdriver"
-  s.add_development_dependency "webdrivers"
 end
