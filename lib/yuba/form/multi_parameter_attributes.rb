@@ -16,7 +16,7 @@ module Yuba::Form::MultiParameterAttributes
             params.delete("#{date_attribute}(3i)"),
             params.delete("#{date_attribute}(4i)"),
             params.delete("#{date_attribute}(5i)")
-          )
+          ).to_s
         end
       end
 

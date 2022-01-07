@@ -2,7 +2,7 @@ require 'test_helper'
 
 class Yuba::Form::Test < ActiveSupport::TestCase
   form_class = Class.new(Yuba::Form) do
-    property :number, type: :int
+    property :number, type: :integer
     property :start_time, type: :date_time
   end
 
