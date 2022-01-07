@@ -17,7 +17,7 @@ module Yuba
 
         def coercing_setter!(name, type)
           class_name = type.to_s.classify
-          type_class = "Yuba::Form::Coercion::Types::Form::#{class_name}".constantize
+          type_class = "Yuba::Form::Coercion::Types::Params::#{class_name}".constantize
 
           mod = Module.new do
             define_method("#{name}=") do |value|
