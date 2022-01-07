@@ -1,6 +1,25 @@
+## 0.0.9
+
+- Support dry-types 1.x
+
+**Breaking Change**
+
+If you use Yuba::Form with integer type, you have to change the type from `:int` to `:integer`
+
+before
+
+```
+property :number, type: :int
+```
+
+after
+
+```
+property :number, type: :integer
+```
 ## 0.0.8
 
-- Add Yuba::Service#value? as the alias of Yuba::Service#has_value? 
+- Add Yuba::Service#value? as the alias of Yuba::Service#has_value?
 
 ## 0.0.7
 
@@ -14,7 +33,7 @@
   - Yuba::Service#has_private_property?
   - Yuba::Service#has_required_property?
   - Yuba::Service#has_optional_property?
-    
+
 ## 0.0.5
 
 - Raise error on initialize without required properties(Yuba::Service)
