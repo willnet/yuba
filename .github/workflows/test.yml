@@ -54,5 +54,5 @@ jobs:
       - name: Run test
         run: |
           set -xe
-          bundle exec rake
+          bin/test -w
         continue-on-error: ${{ matrix.allow_failures == 'true' }}
