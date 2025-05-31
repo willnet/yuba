@@ -12,7 +12,9 @@ class Yuba::Form::Test < ActiveSupport::TestCase
   end
 
   test 'create subclass' do
-    Class.new(Yuba::Form)
+    assert_nothing_raised do
+      Class.new(Yuba::Form)
+    end
   end
 
   test 'property works' do

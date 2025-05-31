@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
-gemspec
+gemspec path: '../'
 
-gem 'rails'
+gem 'rails', '~> 7.1.0'
 gem 'minitest'
 gem 'sqlite3'
