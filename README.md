@@ -34,8 +34,8 @@ $ bundle install
 
 ## Support
 
-- Rails 5.2+
-- Ruby 2.5+
+- Rails 7.1+
+- Ruby 3.2+
 
 ## ViewModel
 
