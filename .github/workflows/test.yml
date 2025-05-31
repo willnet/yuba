@@ -2,57 +2,34 @@ name: test
 
 on:
   push:
-    branches:
-      - master
+    branches: [ main ]
   pull_request:
-    types:
-      - opened
-      - synchronize
-      - reopened
+    branches: [ main ]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
-    container: ${{ matrix.ruby }}
-
     strategy:
-      fail-fast: false
-
       matrix:
-        ruby:
-          - ruby:2.5
-          - ruby:2.6
-          - ruby:2.7
-          - ruby:3.0
-          - rubylang/ruby:master-nightly-bionic
-        include:
-          - ruby: rubylang/ruby:master-nightly-bionic
-            allow_failures: "true"
+        ruby-version: ['3.2', '3.3', '3.4']
+        gemfile:
+          - rails_7_1
+          - rails_7_2
+          - rails_8_0
+        exclude:
+          - ruby-version: '3.4'
+            gemfile: rails_7_1
+    env:
+      BUNDLE_GEMFILE: gemfiles/${{ matrix.gemfile }}.gemfile
 
     steps:
-      - uses: actions/checkout@v2
-
-
-      - name: Cache vendor/bundle
-        uses: actions/cache@v1
-        id: cache_gem
-        with:
-          path: vendor/bundle
-          key: v1-gem-${{ runner.os }}-${{ matrix.ruby }}-${{ github.sha }}
-          restore-keys: |
-            v1-gem-${{ runner.os }}-${{ matrix.ruby }}-
-        continue-on-error: ${{ matrix.allow_failures == 'true' }}
-
-      - name: bundle update
-        run: |
-          set -xe
-          bundle config path vendor/bundle
-          bundle update --jobs $(nproc) --retry 3
-        continue-on-error: ${{ matrix.allow_failures == 'true' }}
-
-      - name: Run test
-        run: |
-          set -xe
-          bin/test -w
-        continue-on-error: ${{ matrix.allow_failures == 'true' }}
+    - uses: actions/checkout@v4
+    - name: Set up Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby-version }}
+        bundler-cache: true
+    - name: Run tests
+      run: |
+        set -xe
+        bin/test -w
